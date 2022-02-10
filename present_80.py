@@ -14,12 +14,13 @@ def generate_round_key(key, round):
     for i in range(1, round+1):
         # At round i the 64-bit roundkey consists of the 64 leftmost bits of the current contents of key.
         roundkey.append(key >> 16)
+        # print('0x' + hex(roundkey[i-1])[2:].zfill(16))
         # Rotated 61 bits to the left
         key = ((key & (2**19 - 1)) << 61) + (key >> 19)
         # Pass the left-most four bits through the present S-box
         key = ((Sbox[key >> 76] << 76) + (key & (2 ** 76 - 1)))
         # round number i XOR with bits 19,18,17,16,15 of key
-        key = key ^ (i << 15)
+        key ^= i << 15
     return roundkey
 
 
@@ -29,17 +30,15 @@ def add_round_key(s, key):
 
 def s_box_layer(text, Sbox):
     tmp_text = 0
-    for i in range(15, 0, -1):
-        tmp_text += Sbox[text >> (4 * i)] << (4 * i)
-        text = text - (text >> (4 * i) << (4 * i))
+    for i in range(16):
+        tmp_text += Sbox[(text >> (i * 4) & 0xf)] << (i * 4)
     return tmp_text
 
 
 def p_layer(text, Pbox):
     tmp_text = 0
-    for i in range(63, 0, -1):
-        tmp_text += (text >> i << Pbox[i])
-        text = text - (text >> i << i)
+    for i in range(64):
+        tmp_text += ((text >> i) & 0x01) << Pbox[i]
     return tmp_text
 
 
@@ -47,10 +46,11 @@ def present_encryption(text, key):
     roundkey = generate_round_key(key, 32)
     state_text = text
     for i in range(31):
-        state_text = add_round_key(state_text, key)
+        state_text = add_round_key(state_text, roundkey[i])
         state_text = s_box_layer(state_text, Sbox)
         state_text = p_layer(state_text, Pbox)
-    add_round_key(state_text, roundkey[31])
+        print(f"Round {i+1} output: {'0x'+ hex(state_text)[2:].zfill(16)}")
+    state_text = add_round_key(state_text, roundkey[-1])
     return state_text
 
 
@@ -66,7 +66,7 @@ if __name__ == '__main__':
     plaintext = "0000000000000000"
     plaintext = bytes.fromhex(plaintext)
     plaintext = int.from_bytes(plaintext, byteorder='big')
-    key = "00000000000000000000"
+    key = "FFFFFFFFFFFFFFFFFFFF"
     key = bytes.fromhex(key)
     key = int.from_bytes(key, byteorder='big')
     start_time = time.perf_counter()
