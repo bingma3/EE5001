@@ -9,48 +9,48 @@ Pbox = [0, 16, 32, 48, 1, 17, 33, 49, 2, 18, 34, 50, 3, 19, 35, 51,
 
 
 # create a round-key array for each round
-def generate_round_key(key, round):
-    roundkey = []
-    for i in range(1, round+1):
-        # At round i the 64-bit roundkey consists of the 64 leftmost bits of the current contents of key.
-        roundkey.append(key >> 16)
-        # print('0x' + hex(roundkey[i-1])[2:].zfill(16))
+def generate_round_key(k, rd):
+    round_key = []
+    for i in range(1, rd + 1):
+        # At round i the 64-bit round key consists of the 64 leftmost bits of the current contents of key.
+        round_key.append(k >> 16)
+        # print('0x' + hex(round key[i-1])[2:].zfill(16))
         # Rotated 61 bits to the left
-        key = ((key & (2**19 - 1)) << 61) + (key >> 19)
+        k = ((k & (2 ** 19 - 1)) << 61) + (k >> 19)
         # Pass the left-most four bits through the present S-box
-        key = ((Sbox[key >> 76] << 76) + (key & (2 ** 76 - 1)))
+        k = ((Sbox[k >> 76] << 76) + (k & (2 ** 76 - 1)))
         # round number i XOR with bits 19,18,17,16,15 of key
-        key ^= i << 15
-    return roundkey
+        k ^= i << 15
+    return round_key
 
 
-def add_round_key(s, key):
-    return s ^ key
+def add_round_key(s, k):
+    return s ^ k
 
 
-def s_box_layer(text, Sbox):
+def s_box_layer(text, sbox):
     tmp_text = 0
     for i in range(16):
-        tmp_text += Sbox[(text >> (i * 4) & 0xf)] << (i * 4)
+        tmp_text += sbox[(text >> (i * 4) & 0xf)] << (i * 4)
     return tmp_text
 
 
-def p_layer(text, Pbox):
+def p_layer(text, pbox):
     tmp_text = 0
     for i in range(64):
-        tmp_text += ((text >> i) & 0x01) << Pbox[i]
+        tmp_text += ((text >> i) & 0x01) << pbox[i]
     return tmp_text
 
 
-def present_encryption(text, key):
-    roundkey = generate_round_key(key, 32)
+def present_encryption(text, k):
+    round_key = generate_round_key(k, 32)
     state_text = text
     for i in range(31):
-        state_text = add_round_key(state_text, roundkey[i])
+        state_text = add_round_key(state_text, round_key[i])
         state_text = s_box_layer(state_text, Sbox)
         state_text = p_layer(state_text, Pbox)
         print(f"Round {i+1} output: {'0x'+ hex(state_text)[2:].zfill(16)}")
-    state_text = add_round_key(state_text, roundkey[-1])
+    state_text = add_round_key(state_text, round_key[-1])
     return state_text
 
 
@@ -76,5 +76,3 @@ if __name__ == '__main__':
     print(f"Key: {'0x' + hex(key)[2:].zfill(20)}")
     print(f"Ciphertext: {'0x'+ hex(ciphertext)[2:].zfill(16)}")
     print(f"Time used: {end_time-start_time}")
-
-

@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ae079359-d82a-4a08-a153-02f76c746f35" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/AES_128bit_rework.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AES_128bit_rework.py" beforeDir="false" afterPath="$PROJECT_DIR$/AES_128bit_rework.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/present_80.py" beforeDir="false" afterPath="$PROJECT_DIR$/present_80.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -187,13 +188,21 @@
       <option name="project" value="LOCAL" />
       <updated>1644576889584</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="AES enhance rework complete">
+      <created>1644587710211</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1644587710211</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add all layer function" />
     <MESSAGE value="dev ver 0.1" />
     <MESSAGE value="AES enhance rework" />
-    <option name="LAST_COMMIT_MESSAGE" value="AES enhance rework" />
+    <MESSAGE value="AES enhance rework complete" />
+    <option name="LAST_COMMIT_MESSAGE" value="AES enhance rework complete" />
   </component>
 </project>

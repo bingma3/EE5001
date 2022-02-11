@@ -35,15 +35,15 @@ def str_2_int(s):
     return int.from_bytes(bytes.fromhex(s), byteorder='big')
 
 
-def padding_keyword(key):
-    if len(key) > 32:
-        raise f"There are {len(key) - 32} extra bytes in the Keyword"
-    elif len(key) < 32:
-        raise f"There are {len(key) - 32} missing bytes in the Keyword"
-    return [[str_2_int(key[0:2]), str_2_int(key[2:4]), str_2_int(key[4:6]), str_2_int(key[6:8])],
-            [str_2_int(key[8:10]), str_2_int(key[10:12]), str_2_int(key[12:14]), str_2_int(key[14:16])],
-            [str_2_int(key[16:18]), str_2_int(key[18:20]), str_2_int(key[20:22]), str_2_int(key[22:24])],
-            [str_2_int(key[24:26]), str_2_int(key[26:28]), str_2_int(key[28:30]), str_2_int(key[30:32])]]
+def padding_keyword(k):
+    if len(k) > 32:
+        raise f"There are {len(k) - 32} extra bytes in the Keyword"
+    elif len(k) < 32:
+        raise f"There are {len(k) - 32} missing bytes in the Keyword"
+    return [[str_2_int(k[0:2]), str_2_int(k[2:4]), str_2_int(k[4:6]), str_2_int(k[6:8])],
+            [str_2_int(k[8:10]), str_2_int(k[10:12]), str_2_int(k[12:14]), str_2_int(k[14:16])],
+            [str_2_int(k[16:18]), str_2_int(k[18:20]), str_2_int(k[20:22]), str_2_int(k[22:24])],
+            [str_2_int(k[24:26]), str_2_int(k[26:28]), str_2_int(k[28:30]), str_2_int(k[30:32])]]
 
 
 def padding_plaintext(txt):
@@ -134,21 +134,20 @@ def update_round_key(w, z):
     return tmp_w
 
 
-def generate_round_key(key, round):
-    roundkey = []
-    roundkey.append(rotate_matrix(key))
-    for i in range(round):
+def generate_round_key(k, rd):
+    round_key = [rotate_matrix(k)]
+    for i in range(rd):
         # Rotate keyword LSB 4 bytes
-        x = shift_lsb_4_keyword_byte(key[3])
+        x = shift_lsb_4_keyword_byte(k[3])
         # Sub keyword LSB 4 bytes
         y = sub_lsb_4_keyword_byte(x)
         # Rcon Keyword LSB 4 bytes
         z = add_rcon_lsb_4_keyword_byte(Rcon[i], y)
         # Keyword round XOR
-        key = update_round_key(key, z)
+        k = update_round_key(k, z)
         # Rotate Keyword
-        roundkey.append(rotate_matrix(key))
-    return roundkey
+        round_key.append(rotate_matrix(k))
+    return round_key
 
 
 def add_round_key(s, w):
@@ -222,14 +221,14 @@ def galois_field_256(const, i):
         return galois_field_256(2, i) ^ i
 
 
-def aes_encrypt(plaintext, key):
+def aes_encrypt(txt, k):
     start_time = time.perf_counter()
     # extract keyword and plaintext
-    key = padding_keyword(key)
-    s = padding_plaintext(plaintext)
+    k = padding_keyword(k)
+    s = padding_plaintext(txt)
     # rotate the keyword and plaintext matrices
     s_rotate = rotate_matrix(s)
-    round_key = generate_round_key(key, ROUND)
+    round_key = generate_round_key(k, ROUND)
 
     for r in range(ROUND):
         print(f"ROUND {r}")
@@ -258,6 +257,3 @@ if __name__ == '__main__':
     print(f"Plaintext:  {plaintext}")
     print(f"Ciphertext: {ciphertext}")
     print(f"Keyword:    {key}")
-
-
-
