@@ -1,6 +1,7 @@
 <component name="InspectionProjectProfileManager">
   <profile version="1.0">
     <option name="myName" value="Project Default" />
+<<<<<<< HEAD
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
@@ -40,6 +41,13 @@
           <option value="embedded.integration_tests.Jitter.jitter.*" />
           <option value="serial.Serial" />
           <option value="profile.Profiles" />
+=======
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N806" />
+          <option value="N803" />
+>>>>>>> origin/master
         </list>
       </option>
     </inspection_tool>
