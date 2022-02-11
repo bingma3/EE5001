@@ -252,7 +252,7 @@ def aes_encrypt(txt, k):
 
 if __name__ == '__main__':
     plaintext = '0123456789abcdeffedcba9876543210'
-    key = '0e1571c947d9e8590cb7add6af7f6798'
+    key = '0f1571c947d9e8590cb7add6af7f6798'
     ciphertext = aes_encrypt(plaintext, key)
     print(f"Plaintext:  {plaintext}")
     print(f"Ciphertext: {ciphertext}")
