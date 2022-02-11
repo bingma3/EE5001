@@ -62,7 +62,7 @@ def insert_ciphertext(s):
     for row in s:
         for elemt in row:
             c += hex(elemt)[2:].zfill(2)
-    print(f"The Ciphertext is {c}")
+    # print(f"The Ciphertext is {c}")
     return c
 
 
@@ -71,12 +71,12 @@ def rotate_matrix(m):
     for i in range(4):
         for j in range(4):
             tmp_m[j].append(m[i][j])
-    print(f"Rotate Matrix")
-    for r in m:
-        print(r)
-    print(f"to Matrix")
-    for r in tmp_m:
-        print(r)
+    # print(f"Rotate Matrix")
+    # for r in m:
+    #     print(r)
+    # print(f"to Matrix")
+    # for r in tmp_m:
+    #     print(r)
     return tmp_m
 
 
@@ -85,18 +85,18 @@ def inv_rotate_matrix(m):
     for i in range(4):
         for j in range(4):
             tmp_m[i].append(m[j][i])
-    print(f"Inverse Rotate Matrix")
-    for r in m:
-        print(r)
-    print(f"to Matrix")
-    for r in tmp_m:
-        print(r)
+    # print(f"Inverse Rotate Matrix")
+    # for r in m:
+    #     print(r)
+    # print(f"to Matrix")
+    # for r in tmp_m:
+    #     print(r)
     return tmp_m
 
 
 def shift_lsb_4_keyword_byte(w):
     x = [w[1], w[2], w[3], w[0]]
-    print(f"shift LSB 4 bytes Keyword {w} to {x}")
+    # print(f"shift LSB 4 bytes Keyword {w} to {x}")
     return x
 
 
@@ -108,7 +108,7 @@ def sub_lsb_4_keyword_byte(x):
     y = []
     for i in range(4):
         y.append(substitute_transform(x[i]))
-    print(f"Substitute Key Word {x} to {y}")
+    # print(f"Substitute Key Word {x} to {y}")
     return y
 
 
@@ -120,7 +120,7 @@ def add_rcon_lsb_4_keyword_byte(r, y):
     z = []
     for i in range(4):
         z.append(r[i] ^ y[i])
-    print(f"Key Word {y} XOR Rcon {r} is {z}")
+    # print(f"Key Word {y} XOR Rcon {r} is {z}")
     return z
 
 
@@ -130,7 +130,7 @@ def update_round_key(w, z):
         for j in range(4):
             tmp_w[i].append((z[j] ^ w[i][j]))
         z = tmp_w[i]
-        print(f"Key Word {i} is {tmp_w[i]}")
+        # print(f"Key Word {i} is {tmp_w[i]}")
     return tmp_w
 
 
@@ -155,9 +155,9 @@ def add_round_key(s, w):
     for i in range(4):
         for j in range(4):
             tmp_s[i].append((s[i][j] ^ w[i][j]))
-    print(f"New state is:")
-    for r in tmp_s:
-        print(r)
+    # print(f"New state is:")
+    # for r in tmp_s:
+    #     print(r)
     return tmp_s
 
 
@@ -166,12 +166,12 @@ def sub_state_bytes(s):
     for i in range(4):
         for j in range(4):
             tmp_s[i].append(substitute_transform(s[i][j]))
-    print(f"Substitute State")
-    for r in s:
-        print(r)
-    print('to Sub-State')
-    for r in tmp_s:
-        print(r)
+    # print(f"Substitute State")
+    # for r in s:
+    #     print(r)
+    # print('to Sub-State')
+    # for r in tmp_s:
+    #     print(r)
     return tmp_s
 
 
@@ -180,12 +180,12 @@ def shift_state_row(s):
              [s[1][1], s[1][2], s[1][3], s[1][0]],
              [s[2][2], s[2][3], s[2][0], s[2][1]],
              [s[3][3], s[3][0], s[3][1], s[3][2]]]
-    print(f"Shift State")
-    for r in s:
-        print(r)
-    print('to')
-    for r in tmp_s:
-        print(r)
+    # print(f"Shift State")
+    # for r in s:
+    #     print(r)
+    # print('to')
+    # for r in tmp_s:
+    #     print(r)
     return tmp_s
 
 
@@ -201,12 +201,12 @@ def mix_column(s):
             for k in range(4):
                 tmp_c = tmp_c ^ galois_field_256(mask[i][k], s[k][j])
             tmp_s[i].append(tmp_c)
-    print(f"Mix Column State")
-    for r in s:
-        print(r)
-    print('to')
-    for r in tmp_s:
-        print(r)
+    # print(f"Mix Column State")
+    # for r in s:
+    #     print(r)
+    # print('to')
+    # for r in tmp_s:
+    #     print(r)
     return tmp_s
 
 
@@ -231,7 +231,7 @@ def aes_encrypt(txt, k):
     round_key = generate_round_key(k, ROUND)
 
     for r in range(ROUND):
-        print(f"ROUND {r}")
+        # print(f"ROUND {r}")
         # Round plaintext XOR keyword
         s_rotate = add_round_key(s_rotate, round_key[r])
         # Substitute State

@@ -49,7 +49,7 @@ def present_encryption(text, k):
         state_text = add_round_key(state_text, round_key[i])
         state_text = s_box_layer(state_text, Sbox)
         state_text = p_layer(state_text, Pbox)
-        print(f"Round {i+1} output: {'0x'+ hex(state_text)[2:].zfill(16)}")
+        # print(f"Round {i+1} output: {'0x'+ hex(state_text)[2:].zfill(16)}")
     state_text = add_round_key(state_text, round_key[-1])
     return state_text
 
