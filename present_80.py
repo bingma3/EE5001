@@ -1,57 +1,57 @@
 import time
 
-# parameters
-Sbox = [0xc, 0x5, 0x6, 0xb, 0x9, 0x0, 0xa, 0xd, 0x3, 0xe, 0xf, 0x8, 0x4, 0x7, 0x1, 0x2]
-Pbox = [0, 16, 32, 48, 1, 17, 33, 49, 2, 18, 34, 50, 3, 19, 35, 51,
-        4, 20, 36, 52, 5, 21, 37, 53, 6, 22, 38, 54, 7, 23, 39, 55,
-        8, 24, 40, 56, 9, 25, 41, 57, 10, 26, 42, 58, 11, 27, 43, 59,
-        12, 28, 44, 60, 13, 29, 45, 61, 14, 30, 46, 62, 15, 31, 47, 63]
 
+class PRESENT_80:
+    def __init__(self, rnd=32):
+        # parameters
+        self.ROUND = rnd
+        self.Sbox = [0xc, 0x5, 0x6, 0xb, 0x9, 0x0, 0xa, 0xd, 0x3, 0xe, 0xf, 0x8, 0x4, 0x7, 0x1, 0x2]
+        self.Pbox = [0, 16, 32, 48, 1, 17, 33, 49, 2, 18, 34, 50, 3, 19, 35, 51,
+                     4, 20, 36, 52, 5, 21, 37, 53, 6, 22, 38, 54, 7, 23, 39, 55,
+                     8, 24, 40, 56, 9, 25, 41, 57, 10, 26, 42, 58, 11, 27, 43, 59,
+                     12, 28, 44, 60, 13, 29, 45, 61, 14, 30, 46, 62, 15, 31, 47, 63]
 
-# create a round-key array for each round
-def generate_round_key(k, rd):
-    round_key = []
-    for i in range(1, rd + 1):
-        # At round i the 64-bit round key consists of the 64 leftmost bits of the current contents of key.
-        round_key.append(k >> 16)
-        # print('0x' + hex(round key[i-1])[2:].zfill(16))
-        # Rotated 61 bits to the left
-        k = ((k & (2 ** 19 - 1)) << 61) + (k >> 19)
-        # Pass the left-most four bits through the present S-box
-        k = ((Sbox[k >> 76] << 76) + (k & (2 ** 76 - 1)))
-        # round number i XOR with bits 19,18,17,16,15 of key
-        k ^= i << 15
-    return round_key
+    # create a round-key array for each round
+    def generate_round_key(self, k):
+        round_key = []
+        for i in range(1, self.ROUND + 1):
+            # At round i the 64-bit round key consists of the 64 leftmost bits of the current contents of key.
+            round_key.append(k >> 16)
+            # print('0x' + hex(round key[i-1])[2:].zfill(16))
+            # Rotated 61 bits to the left
+            k = ((k & (2 ** 19 - 1)) << 61) + (k >> 19)
+            # Pass the left-most four bits through the present S-box
+            k = ((self.Sbox[k >> 76] << 76) + (k & (2 ** 76 - 1)))
+            # round number i XOR with bits 19,18,17,16,15 of key
+            k ^= i << 15
+        return round_key
 
+    @staticmethod
+    def add_round_key(s, k):
+        return s ^ k
 
-def add_round_key(s, k):
-    return s ^ k
+    def s_box_layer(self, text):
+        tmp_text = 0
+        for i in range(16):
+            tmp_text += self.Sbox[(text >> (i * 4) & 0xf)] << (i * 4)
+        return tmp_text
 
+    def p_layer(self, text):
+        tmp_text = 0
+        for i in range(64):
+            tmp_text += ((text >> i) & 0x01) << self.Pbox[i]
+        return tmp_text
 
-def s_box_layer(text, sbox):
-    tmp_text = 0
-    for i in range(16):
-        tmp_text += sbox[(text >> (i * 4) & 0xf)] << (i * 4)
-    return tmp_text
-
-
-def p_layer(text, pbox):
-    tmp_text = 0
-    for i in range(64):
-        tmp_text += ((text >> i) & 0x01) << pbox[i]
-    return tmp_text
-
-
-def present_encryption(text, k):
-    round_key = generate_round_key(k, 32)
-    state_text = text
-    for i in range(31):
-        state_text = add_round_key(state_text, round_key[i])
-        state_text = s_box_layer(state_text, Sbox)
-        state_text = p_layer(state_text, Pbox)
-        # print(f"Round {i+1} output: {'0x'+ hex(state_text)[2:].zfill(16)}")
-    state_text = add_round_key(state_text, round_key[-1])
-    return state_text
+    def encryption(self, text, k):
+        round_key = self.generate_round_key(k)
+        state_text = text
+        for i in range(self.ROUND-1):
+            state_text = self.add_round_key(state_text, round_key[i])
+            state_text = self.s_box_layer(state_text)
+            state_text = self.p_layer(state_text)
+            # print(f"Round {i+1} output: {'0x'+ hex(state_text)[2:].zfill(16)}")
+        state_text = self.add_round_key(state_text, round_key[-1])
+        return state_text
 
 
 if __name__ == '__main__':
@@ -70,7 +70,8 @@ if __name__ == '__main__':
     key = bytes.fromhex(key)
     key = int.from_bytes(key, byteorder='big')
     start_time = time.perf_counter()
-    ciphertext = present_encryption(plaintext, key)
+    present = PRESENT_80()
+    ciphertext = present.encryption(plaintext, key)
     end_time = time.perf_counter()
     print(f"Plaintext: {'0x' + hex(plaintext)[2:].zfill(16)}")
     print(f"Key: {'0x' + hex(key)[2:].zfill(20)}")
