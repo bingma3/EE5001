@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ae079359-d82a-4a08-a153-02f76c746f35" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/EE5001.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/EE5001.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_02_2022_10_45__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_02_2022_10_45__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_02_2022_10_53__Changes_.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/aes_128.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AES_128bit_rework.py" beforeDir="false" afterPath="$PROJECT_DIR$/AES_128bit_rework.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/present_80.py" beforeDir="false" afterPath="$PROJECT_DIR$/present_80.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,10 +15,16 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="Python Unit Test" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="bingma3 &lt;79664191+bingma3@users.noreply.github.com&gt;" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -40,7 +42,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
-  <component name="RunManager" selected="Python.present_80">
+  <component name="RunManager" selected="Python.AES_128bit_rework">
     <configuration name="AES_128bit" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="EE5001" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -168,17 +170,17 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.main" />
-      <item itemvalue="Python.AES_128bit_rework" />
-      <item itemvalue="Python.present_80" />
-      <item itemvalue="Python.find_prime" />
-      <item itemvalue="Python.euclidAlgorithm" />
       <item itemvalue="Python.AES_128bit" />
+      <item itemvalue="Python.AES_128bit_rework" />
+      <item itemvalue="Python.euclidAlgorithm" />
+      <item itemvalue="Python.find_prime" />
+      <item itemvalue="Python.main" />
+      <item itemvalue="Python.present_80" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.present_80" />
         <item itemvalue="Python.AES_128bit_rework" />
+        <item itemvalue="Python.present_80" />
         <item itemvalue="Python.AES_128bit" />
         <item itemvalue="Python.euclidAlgorithm" />
         <item itemvalue="Python.find_prime" />
@@ -236,7 +238,14 @@
       <option name="project" value="LOCAL" />
       <updated>1644588453212</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="rework code with class">
+      <created>1644792835060</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1644792835060</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -246,6 +255,7 @@
     <MESSAGE value="AES enhance rework complete" />
     <MESSAGE value="fix typo and waring" />
     <MESSAGE value="remove print in call function" />
-    <option name="LAST_COMMIT_MESSAGE" value="remove print in call function" />
+    <MESSAGE value="rework code with class" />
+    <option name="LAST_COMMIT_MESSAGE" value="rework code with class" />
   </component>
 </project>
