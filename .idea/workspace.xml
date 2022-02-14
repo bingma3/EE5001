@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ae079359-d82a-4a08-a153-02f76c746f35" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/aes_128.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assignment1_unittest.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AES_128bit_rework.py" beforeDir="false" afterPath="$PROJECT_DIR$/AES_128bit_rework.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aes_128.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/present_80.py" beforeDir="false" afterPath="$PROJECT_DIR$/present_80.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +43,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
-  <component name="RunManager" selected="Python.AES_128bit_rework">
+  <component name="RunManager" selected="Python.assignment1_unittest">
     <configuration name="AES_128bit" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="EE5001" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -85,6 +86,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="assignment1_unittest" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="EE5001" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="E:\mystuff\Python\EE5001\venv\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="E:\mystuff\Python\EE5001\assignment1_unittest.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="euclidAlgorithm" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="EE5001" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -98,27 +120,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/euclidAlgorithm.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="find_prime" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="EE5001" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/find_prime.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -170,20 +171,20 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.AES_128bit" />
-      <item itemvalue="Python.AES_128bit_rework" />
-      <item itemvalue="Python.euclidAlgorithm" />
-      <item itemvalue="Python.find_prime" />
       <item itemvalue="Python.main" />
+      <item itemvalue="Python.AES_128bit_rework" />
       <item itemvalue="Python.present_80" />
+      <item itemvalue="Python.euclidAlgorithm" />
+      <item itemvalue="Python.AES_128bit" />
+      <item itemvalue="Python.assignment1_unittest" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.AES_128bit_rework" />
+        <item itemvalue="Python.assignment1_unittest" />
         <item itemvalue="Python.present_80" />
+        <item itemvalue="Python.AES_128bit_rework" />
         <item itemvalue="Python.AES_128bit" />
         <item itemvalue="Python.euclidAlgorithm" />
-        <item itemvalue="Python.find_prime" />
       </list>
     </recent_temporary>
   </component>
@@ -245,7 +246,14 @@
       <option name="project" value="LOCAL" />
       <updated>1644792835060</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="add unittest for aes128">
+      <created>1644824648115</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1644824648115</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -256,6 +264,7 @@
     <MESSAGE value="fix typo and waring" />
     <MESSAGE value="remove print in call function" />
     <MESSAGE value="rework code with class" />
-    <option name="LAST_COMMIT_MESSAGE" value="rework code with class" />
+    <MESSAGE value="add unittest for aes128" />
+    <option name="LAST_COMMIT_MESSAGE" value="add unittest for aes128" />
   </component>
 </project>
