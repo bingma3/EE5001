@@ -1,0 +1,10 @@
+Assignment 1 Submission deadline: 11 pm, 28 February 2022
+Copying of any form will not be accepted. This includes copying and pasting information from the Internet. 1/1
+All code must be your own. Any reports with copied text will get zero.
+Implementation of the AES-128 and the PRESENT-80 Ciphers
+Objective:
+To gain a deeper understanding of cryptographic algorithms AES and PRESENT and their implementation.
+Marks:
+Assignment Represents 30% of the total marks for this module.
+Description of Assignment:
+The purpose of this assignment is to implement a 128-bit key size AES (AES-128) cypher and an ultra-lightweight 80-bit key PRESENT (PRESENT-80) cypher.

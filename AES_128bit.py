@@ -1,7 +1,7 @@
 import time
 
 
-class ASE_128:
+class AES_128:
     def __init__(self, rnd=10):
         self.ROUND = rnd
         self.Rcon = [
@@ -331,7 +331,7 @@ class ASE_128:
                 for round 10
                 run step 1, 2, 3 only
         """
-        start_time = time.perf_counter()
+        # start_time = time.perf_counter()
         # extract keyword and plaintext
         k = self.regulate_keyword(k)
         s = self.regulate_plaintext(txt)
@@ -354,8 +354,8 @@ class ASE_128:
         s_rotate = self.add_round_key(s_rotate, round_key[-1])
         s_final = self.inv_rotate_matrix(s_rotate)
         cipher_text = self.ciphertext_decode(s_final)
-        end_time = time.perf_counter()
-        print(f"Process time: {end_time - start_time}")
+        # end_time = time.perf_counter()
+        # print(f"Process time: {end_time - start_time}")
         return cipher_text
 
     def ctr_mode(self, txt, k, nonce):
@@ -430,8 +430,8 @@ if __name__ == '__main__':
     # key = '2b7e151628aed2a6abf7158809cf4f3c'
     # plaintext = '00000000000000000000000000000000'
     # key = 'ffffffffffffffffffffffffffffffff'
-    #
-    aes = ASE_128()
+
+    aes = AES_128()
     ciphertext = aes.ctr_mode(t, key, plaintext)
     print(f"CTR Mode")
     print(f"plaintext: {t}")
@@ -450,4 +450,5 @@ if __name__ == '__main__':
     print(f"Nonce:  {plaintext}")
     print(f"Keyword:    {key}")
     print(f"Ciphertext: {ciphertext}")
+
 

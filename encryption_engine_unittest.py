@@ -1,5 +1,5 @@
 import unittest
-from AES_128bit import ASE_128
+from AES_128bit import AES_128
 from present_80 import PRESENT_80
 
 
