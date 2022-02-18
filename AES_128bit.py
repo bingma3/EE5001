@@ -42,7 +42,7 @@ class ASE_128:
         """
         return int.from_bytes(bytes.fromhex(s), byteorder='big')
 
-    def padding_keyword(self, k):
+    def regulate_keyword(self, k):
         """
         :param k: Raw Key
         :return: A 4 x 4 keyword matrix with type of integer
@@ -62,7 +62,7 @@ class ASE_128:
                 [self.str_2_int(k[24:26]), self.str_2_int(k[26:28]),
                  self.str_2_int(k[28:30]), self.str_2_int(k[30:32])]]
 
-    def padding_plaintext(self, txt):
+    def regulate_plaintext(self, txt):
         """
         :param txt: Raw Plaintext
         :return: The Plaintext matrix with type of integer
@@ -83,6 +83,16 @@ class ASE_128:
                  self.str_2_int(txt[28:30]), self.str_2_int(txt[30:32])]]
 
     @staticmethod
+    def padding_plaintext(txt):
+        pad_txt = []
+        while len(txt) > 16:
+            pad_txt.append(int.from_bytes(txt[:16].encode(), byteorder='big'))
+            txt = txt[16:]
+        if len(txt) > 0:
+            pad_txt.append(int.from_bytes(txt.ljust(16, '\n').encode(), byteorder='big'))
+        return pad_txt
+
+    @staticmethod
     def ciphertext_decode(s):
         """
         :param s: ciphertext matrix (type: integer)
@@ -92,7 +102,6 @@ class ASE_128:
         for row in s:
             for elemt in row:
                 c += hex(elemt)[2:].zfill(2)
-        # print(f"The Ciphertext is {c}")
         return c
 
     @staticmethod
@@ -106,12 +115,6 @@ class ASE_128:
         for i in range(4):
             for j in range(4):
                 tmp_m[j].append(m[i][j])
-        # print(f"Rotate Matrix")
-        # for r in m:
-        #     print(r)
-        # print(f"to Matrix")
-        # for r in tmp_m:
-        #     print(r)
         return tmp_m
 
     @staticmethod
@@ -125,12 +128,6 @@ class ASE_128:
         for i in range(4):
             for j in range(4):
                 tmp_m[i].append(m[j][i])
-        # print(f"Inverse Rotate Matrix")
-        # for r in m:
-        #     print(r)
-        # print(f"to Matrix")
-        # for r in tmp_m:
-        #     print(r)
         return tmp_m
 
     @staticmethod
@@ -142,7 +139,6 @@ class ASE_128:
         K13,K14,K15,K16 -> K14,K15,K16,K13
         """
         x = [w[1], w[2], w[3], w[0]]
-        # print(f"shift LSB 4 bytes Keyword {w} to {x}")
         return x
 
     def substitute_transform(self, b):
@@ -163,7 +159,6 @@ class ASE_128:
         y = []
         for i in range(4):
             y.append(self.substitute_transform(x[i]))
-        # print(f"Substitute Key Word {x} to {y}")
         return y
 
     @staticmethod
@@ -185,7 +180,6 @@ class ASE_128:
         z = []
         for i in range(4):
             z.append(r[i] ^ y[i])
-        # print(f"Key Word {y} XOR Rcon {r} is {z}")
         return z
 
     @staticmethod
@@ -204,7 +198,6 @@ class ASE_128:
             for j in range(4):
                 tmp_w[i].append((z[j] ^ w[i][j]))
             z = tmp_w[i]
-            # print(f"Key Word {i} is {tmp_w[i]}")
         return tmp_w
 
     @staticmethod
@@ -218,9 +211,6 @@ class ASE_128:
         for i in range(4):
             for j in range(4):
                 tmp_s[i].append((s[i][j] ^ w[i][j]))
-        # print(f"New state is:")
-        # for r in tmp_s:
-        #     print(r)
         return tmp_s
 
     def sub_state_bytes(self, s):
@@ -232,12 +222,6 @@ class ASE_128:
         for i in range(4):
             for j in range(4):
                 tmp_s[i].append(self.substitute_transform(s[i][j]))
-        # print(f"Substitute State")
-        # for r in s:
-        #     print(r)
-        # print('to Sub-State')
-        # for r in tmp_s:
-        #     print(r)
         return tmp_s
 
     @staticmethod
@@ -255,12 +239,6 @@ class ASE_128:
                  [s[1][1], s[1][2], s[1][3], s[1][0]],
                  [s[2][2], s[2][3], s[2][0], s[2][1]],
                  [s[3][3], s[3][0], s[3][1], s[3][2]]]
-        # print(f"Shift State")
-        # for r in s:
-        #     print(r)
-        # print('to')
-        # for r in tmp_s:
-        #     print(r)
         return tmp_s
 
     def mix_column(self, s):
@@ -282,12 +260,6 @@ class ASE_128:
                 for k in range(4):
                     tmp_c = tmp_c ^ self.galois_field_256(multiplication[i][k], s[k][j])
                 tmp_s[i].append(tmp_c)
-        # print(f"Mix Column State")
-        # for r in s:
-        #     print(r)
-        # print('to')
-        # for r in tmp_s:
-        #     print(r)
         return tmp_s
 
     def galois_field_256(self, x, i):
@@ -361,8 +333,8 @@ class ASE_128:
         """
         start_time = time.perf_counter()
         # extract keyword and plaintext
-        k = self.padding_keyword(k)
-        s = self.padding_plaintext(txt)
+        k = self.regulate_keyword(k)
+        s = self.regulate_plaintext(txt)
         # rotate the keyword and plaintext matrices
         s_rotate = self.rotate_matrix(s)
         round_key = self.generate_round_key(k, self.ROUND)
@@ -386,6 +358,14 @@ class ASE_128:
         print(f"Process time: {end_time - start_time}")
         return cipher_text
 
+    def ctr_mode(self, txt, k, nonce):
+        pad_txt = self.padding_plaintext(txt)
+        cnt = len(pad_txt)
+        output = ''
+        for i in range(cnt):
+            output += hex(pad_txt[i] ^ self.str_2_int(self.encrypt(hex(self.str_2_int(nonce) + i)[2:].zfill(32), k)))[2:]
+        return output
+
 
 if __name__ == '__main__':
     '''
@@ -398,15 +378,19 @@ if __name__ == '__main__':
     00000000000000000000000000000000 | 00000000000000000000000000000000 | 66e94bd4ef8a2c3b884cfa59ca342b2e
     00000000000000000000000000000000 | ffffffffffffffffffffffffffffffff | a1f6258c877d5fcd8964484538bfc92c
     '''
-    # plaintext = '0123456789abcdeffedcba9876543210'
-    # key = '0f1571c947d9e8590cb7add6af7f6798'
+    t = 'helloworld'
+    plaintext = '0123456789abcdeffedcba9876543210'
+    key = '0f1571c947d9e8590cb7add6af7f6798'
     # plaintext = '6bc1bee22e409f96e93d7e117393172a'
     # key = '2b7e151628aed2a6abf7158809cf4f3c'
-    plaintext = '00000000000000000000000000000000'
-    key = 'ffffffffffffffffffffffffffffffff'
-
+    # plaintext = '00000000000000000000000000000000'
+    # key = 'ffffffffffffffffffffffffffffffff'
+    #
     aes = ASE_128()
-    ciphertext = aes.encrypt(plaintext, key)
-    print(f"Plaintext:  {plaintext}")
+    ciphertext = aes.ctr_mode(t, key, plaintext)
+    print(f"plaintext: {t}")
+    print(f"Nonce:  {plaintext}")
     print(f"Keyword:    {key}")
     print(f"Ciphertext: {ciphertext}")
+
+

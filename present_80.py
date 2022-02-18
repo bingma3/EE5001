@@ -98,14 +98,6 @@ class PRESENT_80:
 
 
 if __name__ == '__main__':
-    '''
-    Plaintext         | Key                    | Ciphertext
-    ------------------|------------------------|-----------------
-    00000000 00000000 | 00000000 00000000 0000 | 5579C138 7B228445
-    00000000 00000000 | FFFFFFFF FFFFFFFF FFFF | E72C46C0 F5945049
-    FFFFFFFF FFFFFFFF | 00000000 00000000 0000 | A112FFC7 2F68417B
-    FFFFFFFF FFFFFFFF | FFFFFFFF FFFFFFFF FFFF | 3333DCD3 213210D2
-    '''
     plaintext = "0000000000000000"
     key = "FFFFFFFFFFFFFFFFFFFF"
     start_time = time.perf_counter()
