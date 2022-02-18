@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ae079359-d82a-4a08-a153-02f76c746f35" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_02_2022_10_45__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_02_2022_10_45__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AES_128bit.py" beforeDir="false" afterPath="$PROJECT_DIR$/AES_128bit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/present_80.py" beforeDir="false" afterPath="$PROJECT_DIR$/present_80.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +133,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="E:\mystuff\Python\EE5001\venv\Scripts\python.exe" />
+      <option name="SDK_HOME" value="D:\Python_project\QA_automation\venv\Scripts\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -172,8 +171,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.AES_128bit" />
-        <item itemvalue="Python tests.Python tests in assignment1_unittest.py" />
         <item itemvalue="Python.present_80" />
+        <item itemvalue="Python tests.Python tests in assignment1_unittest.py" />
         <item itemvalue="Python.euclidAlgorithm" />
       </list>
     </recent_temporary>
@@ -236,7 +235,14 @@
       <option name="project" value="LOCAL" />
       <updated>1644792835060</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="add ofb mode and cgb mode into AES_128bit.py">
+      <created>1645180510750</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1645180510750</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -247,6 +253,7 @@
     <MESSAGE value="fix typo and waring" />
     <MESSAGE value="remove print in call function" />
     <MESSAGE value="rework code with class" />
-    <option name="LAST_COMMIT_MESSAGE" value="rework code with class" />
+    <MESSAGE value="add ofb mode and cgb mode into AES_128bit.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="add ofb mode and cgb mode into AES_128bit.py" />
   </component>
 </project>

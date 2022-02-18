@@ -96,15 +96,106 @@ class PRESENT_80:
         output = self.add_round_key(state_text, round_key[-1])
         return self.int2hex(output)
 
+    @staticmethod
+    def padding_plaintext(txt):
+        pad_txt = []
+        while len(txt) > 8:
+            pad_txt.append(int.from_bytes(txt[:8].encode(), byteorder='big'))
+            txt = txt[8:]
+        if len(txt) > 0:
+            pad_txt.append(int.from_bytes(txt.ljust(8, '\n').encode(), byteorder='big'))
+        return pad_txt
+
+    def ctr_mode(self, txt, k, nonce):
+        """
+        :param txt: raw plaintext
+        :param k: key
+        :param nonce: initial vector
+        :return: ciphertext (in string type hexadecimal)
+            patter:
+                the CTR (counter) mode requires an initial vector to make a block of cipher into the plaintext.
+                the initial vector updates after each block encryption by adding a counter step.
+        """
+        pad_txt = self.padding_plaintext(txt)
+        output = ''
+        for i in range(len(pad_txt)):
+            output += hex(pad_txt[i] ^
+                          self.hex2int(self.encrypt(hex(self.hex2int(nonce) + i)[2:].zfill(16), k)))[2:].zfill(16)
+        return output
+
+    def ofb_mode(self, txt, k, iv):
+        """
+        :param txt: raw plaintext
+        :param k: key
+        :param iv: initial vector
+        :return: ciphertext (in string type hexadecimal)
+            patter:
+                the OFB (output feedback) mode requires an initial vector to make a block of cipher into the plaintext.
+                the initial vector will be updated for each block encryption,
+                where the block encryption output as the new vector feeds into the next block encryption.
+        """
+        output = ''
+        pad_txt = self.padding_plaintext(txt)
+        for i in range(len(pad_txt)):
+            iv = self.encrypt(iv, k)
+            output += hex(pad_txt[i] ^ self.hex2int(iv))[2:].zfill(16)
+        return output
+
+    def cfb_mode(self, txt, k, iv):
+        """
+        :param txt: raw plaintext
+        :param k: key
+        :param iv: initial vector
+        :return: ciphertext (in string type hexadecimal)
+            patter:
+                the CFB (cipher feedback) mode requires an initial vector to make a block of cipher into the plaintext.
+                the initial vector will be updated for each block encryption,
+                where the block cipher as the new vector feeds into the next block encryption.
+        """
+        output = ''
+        pad_txt = self.padding_plaintext(txt)
+        for i in range(len(pad_txt)):
+            iv = hex(pad_txt[i] ^ self.hex2int(self.encrypt(iv, k)))[2:].zfill(16)
+            output += iv
+        return output
+
 
 if __name__ == '__main__':
     plaintext = "0000000000000000"
     key = "FFFFFFFFFFFFFFFFFFFF"
-    start_time = time.perf_counter()
+    # start_time = time.perf_counter()
     present = PRESENT_80()
-    ciphertext = present.encrypt(plaintext, key)
+    # ciphertext = present.encrypt(plaintext, key)
+    # end_time = time.perf_counter()
+    # print(f"Plaintext: {plaintext}")
+    # print(f"Key: {key}")
+    # print(f"Ciphertext: {ciphertext.upper()}")
+    # print(f"Time used: {end_time-start_time}")
+    t = 'helloworld,helloworld,helloworld'
+    start_time = time.perf_counter()
+    ciphertext = present.ctr_mode(t, key, plaintext)
     end_time = time.perf_counter()
-    print(f"Plaintext: {plaintext}")
-    print(f"Key: {key}")
-    print(f"Ciphertext: {ciphertext.upper()}")
-    print(f"Time used: {end_time-start_time}")
+    print(f"CTR Mode")
+    print(f"plaintext: {t}")
+    print(f"Nonce:  {plaintext}")
+    print(f"Keyword:    {key}")
+    print(f"Ciphertext: {ciphertext}")
+    print(f"Time used: {end_time - start_time}")
+    start_time = time.perf_counter()
+    ciphertext = present.ofb_mode(t, key, plaintext)
+    end_time = time.perf_counter()
+    print(f"OFB Mode")
+    print(f"plaintext: {t}")
+    print(f"Nonce:  {plaintext}")
+    print(f"Keyword:    {key}")
+    print(f"Ciphertext: {ciphertext}")
+    print(f"Time used: {end_time - start_time}")
+    start_time = time.perf_counter()
+    ciphertext = present.cfb_mode(t, key, plaintext)
+    end_time = time.perf_counter()
+    print(f"CFB Mode")
+    print(f"plaintext: {t}")
+    print(f"Nonce:  {plaintext}")
+    print(f"Keyword:    {key}")
+    print(f"Ciphertext: {ciphertext}")
+    print(f"Time used: {end_time - start_time}")
