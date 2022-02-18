@@ -359,11 +359,56 @@ class ASE_128:
         return cipher_text
 
     def ctr_mode(self, txt, k, nonce):
+        """
+        :param txt: raw plaintext
+        :param k: key
+        :param nonce: initial vector
+        :return: ciphertext (in string type hexadecimal)
+            patter:
+                the CTR (counter) mode requires an initial vector to make a block of cipher into the plaintext.
+                the initial vector updates after each block encryption by adding a counter step.
+        """
         pad_txt = self.padding_plaintext(txt)
-        cnt = len(pad_txt)
         output = ''
-        for i in range(cnt):
-            output += hex(pad_txt[i] ^ self.str_2_int(self.encrypt(hex(self.str_2_int(nonce) + i)[2:].zfill(32), k)))[2:]
+        for i in range(len(pad_txt)):
+            output += hex(pad_txt[i] ^
+                          self.str_2_int(self.encrypt(hex(self.str_2_int(nonce) + i)[2:].zfill(32), k)))[2:].zfill(32)
+        return output
+
+    def ofb_mode(self, txt, k, iv):
+        """
+        :param txt: raw plaintext
+        :param k: key
+        :param iv: initial vector
+        :return: ciphertext (in string type hexadecimal)
+            patter:
+                the OFB (output feedback) mode requires an initial vector to make a block of cipher into the plaintext.
+                the initial vector will be updated for each block encryption,
+                where the block encryption output as the new vector feeds into the next block encryption.
+        """
+        output = ''
+        pad_txt = self.padding_plaintext(txt)
+        for i in range(len(pad_txt)):
+            iv = self.encrypt(iv, k)
+            output += hex(pad_txt[i] ^ self.str_2_int(iv))[2:].zfill(32)
+        return output
+
+    def cfb_mode(self, txt, k, iv):
+        """
+        :param txt: raw plaintext
+        :param k: key
+        :param iv: initial vector
+        :return: ciphertext (in string type hexadecimal)
+            patter:
+                the CFB (cipher feedback) mode requires an initial vector to make a block of cipher into the plaintext.
+                the initial vector will be updated for each block encryption,
+                where the block cipher as the new vector feeds into the next block encryption.
+        """
+        output = ''
+        pad_txt = self.padding_plaintext(txt)
+        for i in range(len(pad_txt)):
+            iv = hex(pad_txt[i] ^ self.str_2_int(self.encrypt(iv, k)))[2:].zfill(32)
+            output += iv
         return output
 
 
@@ -378,7 +423,7 @@ if __name__ == '__main__':
     00000000000000000000000000000000 | 00000000000000000000000000000000 | 66e94bd4ef8a2c3b884cfa59ca342b2e
     00000000000000000000000000000000 | ffffffffffffffffffffffffffffffff | a1f6258c877d5fcd8964484538bfc92c
     '''
-    t = 'helloworld'
+    t = 'helloworld,helloworld,helloworld'
     plaintext = '0123456789abcdeffedcba9876543210'
     key = '0f1571c947d9e8590cb7add6af7f6798'
     # plaintext = '6bc1bee22e409f96e93d7e117393172a'
@@ -388,9 +433,21 @@ if __name__ == '__main__':
     #
     aes = ASE_128()
     ciphertext = aes.ctr_mode(t, key, plaintext)
+    print(f"CTR Mode")
     print(f"plaintext: {t}")
     print(f"Nonce:  {plaintext}")
     print(f"Keyword:    {key}")
     print(f"Ciphertext: {ciphertext}")
-
+    ciphertext = aes.ofb_mode(t, key, plaintext)
+    print(f"OFB Mode")
+    print(f"plaintext: {t}")
+    print(f"Nonce:  {plaintext}")
+    print(f"Keyword:    {key}")
+    print(f"Ciphertext: {ciphertext}")
+    ciphertext = aes.cfb_mode(t, key, plaintext)
+    print(f"CFB Mode")
+    print(f"plaintext: {t}")
+    print(f"Nonce:  {plaintext}")
+    print(f"Keyword:    {key}")
+    print(f"Ciphertext: {ciphertext}")
 
