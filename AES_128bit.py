@@ -34,14 +34,18 @@ class AES_128:
             [0xE1, 0xF8, 0x98, 0x11, 0x69, 0xD9, 0x8E, 0x94, 0x9B, 0x1E, 0x87, 0xE9, 0xCE, 0x55, 0x28, 0xDF],
             [0x8C, 0xA1, 0x89, 0x0D, 0xBF, 0xE6, 0x42, 0x68, 0x41, 0x99, 0x2D, 0x0F, 0xB0, 0x54, 0xBB, 0x16]]
 
+    # Plaintext Padding
     @staticmethod
-    def str_2_int(s):
-        """
-        :param s: Hex string
-        :return: Integer
-        """
-        return int.from_bytes(bytes.fromhex(s), byteorder='big')
+    def padding_plaintext(txt):
+        pad_txt = []
+        while len(txt) > 16:
+            pad_txt.append(int.from_bytes(txt[:16].encode(), byteorder='big'))
+            txt = txt[16:]
+        if len(txt) > 0:
+            pad_txt.append(int.from_bytes(txt.ljust(16, '\n').encode(), byteorder='big'))
+        return pad_txt
 
+    # Round Key generator
     def regulate_keyword(self, k):
         """
         :param k: Raw Key
@@ -62,35 +66,120 @@ class AES_128:
                 [self.str_2_int(k[24:26]), self.str_2_int(k[26:28]),
                  self.str_2_int(k[28:30]), self.str_2_int(k[30:32])]]
 
-    def regulate_plaintext(self, txt):
+    @staticmethod
+    def shift_lsb_4_keyword_byte(w):
         """
-        :param txt: Raw Plaintext
-        :return: The Plaintext matrix with type of integer
+        :param w: LSB 4 bytes of round key
+        :return: rotate 4 bytes
+        shift the most right 4 bytes of round key
+        K13,K14,K15,K16 -> K14,K15,K16,K13
+        """
+        x = [w[1], w[2], w[3], w[0]]
+        return x
+
+    def sub_lsb_4_keyword_byte(self, x):
+        """
+        :param x: the LSB 4 bytes of round key
+        :return: substitution of SBox
+        """
+        y = []
+        for i in range(4):
+            y.append(self.substitute_transform(x[i]))
+        return y
+
+    @staticmethod
+    def add_rcon_lsb_4_keyword_byte(r, y):
+        """
+        :param r: a row of Rcon table
+        :param y: LSB 4 bytes of round key
+        :return: r XOR y
+        """
+        z = []
+        for i in range(4):
+            z.append(r[i] ^ y[i])
+        return z
+
+    @staticmethod
+    def update_round_key(w, z):
+        """
+        :param w: the current round key
+        :param z: the LSB 4 bytes round key auxiliary function output
+        :return: the next round key
+            w'0 = w0 xor z0
+            w'1 = w'0 xor z1
+            w'2 = w'1 xor z2
+            w'3 = w'2 xor z3
+        """
+        tmp_w = [[], [], [], []]
+        for i in range(4):
+            for j in range(4):
+                tmp_w[i].append((z[j] ^ w[i][j]))
+            z = tmp_w[i]
+        return tmp_w
+
+    def generate_round_key(self, k, rd):
+        """
+        :param k: original key matrix
+        :param rd: the total number of round
+        :return: An array of round key
+            pattern:
+                1. shift LSB 4 bytes of key
+                2. substitute the output of step 1
+                3. add round of Rcon to the output of step 2
+                4. generate the next round of key
+                5. rotate the round key for adding to state
+        """
+        round_key = [self.rotate_matrix(k)]
+        for i in range(rd):
+            # Rotate keyword LSB 4 bytes
+            x = self.shift_lsb_4_keyword_byte(k[3])
+            # Sub keyword LSB 4 bytes
+            y = self.sub_lsb_4_keyword_byte(x)
+            # Rcon Keyword LSB 4 bytes
+            z = self.add_rcon_lsb_4_keyword_byte(self.Rcon[i], y)
+            # Keyword round XOR
+            k = self.update_round_key(k, z)
+            # Rotate Keyword
+            round_key.append(self.rotate_matrix(k))
+        return round_key
+
+    # Block encryption engine
+    @staticmethod
+    def str_2_int(s):
+        """
+        :param s: Hex string
+        :return: Integer
+        """
+        return int.from_bytes(bytes.fromhex(s), byteorder='big')
+
+    @staticmethod
+    def int_2_hex(i):
+        """
+        :param i: int
+        :return: hex string
+            e.g. 15 -> 0f, 17 -> 11
+        """
+        return hex(i)[2:].zfill(2).encode()
+
+    def regulate_iv(self, iv):
+        """
+        :param iv: initial vector
+        :return: The IV matrix with type of integer
         split the raw key into 4 x 4 bytes of matrix
         """
         # set a boundary for the raw Plaintext
-        if len(txt) > 32:
-            raise f"There are {len(txt) - 32} extra bytes in the Plaintext"
-        elif len(txt) < 32:
-            raise f"There are {len(txt) - 32} missing bytes in the Plaintext"
-        return [[self.str_2_int(txt[0:2]), self.str_2_int(txt[2:4]),
-                 self.str_2_int(txt[4:6]), self.str_2_int(txt[6:8])],
-                [self.str_2_int(txt[8:10]), self.str_2_int(txt[10:12]),
-                 self.str_2_int(txt[12:14]), self.str_2_int(txt[14:16])],
-                [self.str_2_int(txt[16:18]), self.str_2_int(txt[18:20]),
-                 self.str_2_int(txt[20:22]), self.str_2_int(txt[22:24])],
-                [self.str_2_int(txt[24:26]), self.str_2_int(txt[26:28]),
-                 self.str_2_int(txt[28:30]), self.str_2_int(txt[30:32])]]
-
-    @staticmethod
-    def padding_plaintext(txt):
-        pad_txt = []
-        while len(txt) > 16:
-            pad_txt.append(int.from_bytes(txt[:16].encode(), byteorder='big'))
-            txt = txt[16:]
-        if len(txt) > 0:
-            pad_txt.append(int.from_bytes(txt.ljust(16, '\n').encode(), byteorder='big'))
-        return pad_txt
+        if len(iv) > 32:
+            raise f"There are {len(iv) - 32} extra bytes in the IV"
+        elif len(iv) < 32:
+            raise f"There are {len(iv) - 32} missing bytes in the IV"
+        return [[self.str_2_int(iv[0:2]), self.str_2_int(iv[2:4]),
+                 self.str_2_int(iv[4:6]), self.str_2_int(iv[6:8])],
+                [self.str_2_int(iv[8:10]), self.str_2_int(iv[10:12]),
+                 self.str_2_int(iv[12:14]), self.str_2_int(iv[14:16])],
+                [self.str_2_int(iv[16:18]), self.str_2_int(iv[18:20]),
+                 self.str_2_int(iv[20:22]), self.str_2_int(iv[22:24])],
+                [self.str_2_int(iv[24:26]), self.str_2_int(iv[26:28]),
+                 self.str_2_int(iv[28:30]), self.str_2_int(iv[30:32])]]
 
     @staticmethod
     def ciphertext_decode(s):
@@ -130,17 +219,6 @@ class AES_128:
                 tmp_m[i].append(m[j][i])
         return tmp_m
 
-    @staticmethod
-    def shift_lsb_4_keyword_byte(w):
-        """
-        :param w: LSB 4 bytes of round key
-        :return: rotate 4 bytes
-        shift the most right 4 bytes of round key
-        K13,K14,K15,K16 -> K14,K15,K16,K13
-        """
-        x = [w[1], w[2], w[3], w[0]]
-        return x
-
     def substitute_transform(self, b):
         """
         :param b: bytes (type: int)
@@ -150,55 +228,6 @@ class AES_128:
             the right 4 bits correspond to column index
         """
         return self.Sbox[b >> 4][b & 0xf]
-
-    def sub_lsb_4_keyword_byte(self, x):
-        """
-        :param x: the LSB 4 bytes of round key
-        :return: substitution of SBox
-        """
-        y = []
-        for i in range(4):
-            y.append(self.substitute_transform(x[i]))
-        return y
-
-    @staticmethod
-    def int_2_hex(i):
-        """
-        :param i: int
-        :return: hex string
-            e.g. 15 -> 0f, 17 -> 11
-        """
-        return hex(i)[2:].zfill(2).encode()
-
-    @staticmethod
-    def add_rcon_lsb_4_keyword_byte(r, y):
-        """
-        :param r: a row of Rcon table
-        :param y: LSB 4 bytes of round key
-        :return: r XOR y
-        """
-        z = []
-        for i in range(4):
-            z.append(r[i] ^ y[i])
-        return z
-
-    @staticmethod
-    def update_round_key(w, z):
-        """
-        :param w: the current round key
-        :param z: the LSB 4 bytes round key auxiliary function output
-        :return: the next round key
-            w'0 = w0 xor z0
-            w'1 = w'0 xor z1
-            w'2 = w'1 xor z2
-            w'3 = w'2 xor z3
-        """
-        tmp_w = [[], [], [], []]
-        for i in range(4):
-            for j in range(4):
-                tmp_w[i].append((z[j] ^ w[i][j]))
-            z = tmp_w[i]
-        return tmp_w
 
     @staticmethod
     def add_round_key(s, w):
@@ -291,37 +320,11 @@ class AES_128:
         elif x == 3:
             return self.galois_field_256(2, i) ^ i
 
-    def generate_round_key(self, k, rd):
+    def encrypt(self, iv, k):
         """
-        :param k: original key matrix
-        :param rd: the total number of round
-        :return: An array of round key
-            pattern:
-                1. shift LSB 4 bytes of key
-                2. substitute the output of step 1
-                3. add round of Rcon to the output of step 2
-                4. generate the next round of key
-                5. rotate the round key for adding to state
-        """
-        round_key = [self.rotate_matrix(k)]
-        for i in range(rd):
-            # Rotate keyword LSB 4 bytes
-            x = self.shift_lsb_4_keyword_byte(k[3])
-            # Sub keyword LSB 4 bytes
-            y = self.sub_lsb_4_keyword_byte(x)
-            # Rcon Keyword LSB 4 bytes
-            z = self.add_rcon_lsb_4_keyword_byte(self.Rcon[i], y)
-            # Keyword round XOR
-            k = self.update_round_key(k, z)
-            # Rotate Keyword
-            round_key.append(self.rotate_matrix(k))
-        return round_key
-
-    def encrypt(self, txt, k):
-        """
-        :param txt: original plaintext matrix
+        :param iv: Initial vector matrix
         :param k: array of round key
-        :return: the cipertext
+        :return: the ciphertext
             pattern:
                 for round 1 ~ 9
                 1. add the round key
@@ -334,7 +337,7 @@ class AES_128:
         # start_time = time.perf_counter()
         # extract keyword and plaintext
         k = self.regulate_keyword(k)
-        s = self.regulate_plaintext(txt)
+        s = self.regulate_iv(iv)
         # rotate the keyword and plaintext matrices
         s_rotate = self.rotate_matrix(s)
         round_key = self.generate_round_key(k, self.ROUND)
@@ -358,6 +361,7 @@ class AES_128:
         # print(f"Process time: {end_time - start_time}")
         return cipher_text
 
+    # Stream encryption mode
     def ctr_mode(self, txt, k, nonce):
         """
         :param txt: raw plaintext
@@ -450,5 +454,3 @@ if __name__ == '__main__':
     print(f"Nonce:  {plaintext}")
     print(f"Keyword:    {key}")
     print(f"Ciphertext: {ciphertext}")
-
-

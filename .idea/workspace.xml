@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ae079359-d82a-4a08-a153-02f76c746f35" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/aes_system_test.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plaintext_sample" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/present_system_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/EE5001.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/EE5001.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AES_128bit.py" beforeDir="false" afterPath="$PROJECT_DIR$/AES_128bit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment1_unittest.py" beforeDir="false" afterPath="$PROJECT_DIR$/encryption_engine_unittest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AES_128bit_rework.py" beforeDir="false" afterPath="$PROJECT_DIR$/AES_128bit_rework.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/encryption_engine_unittest.py" beforeDir="false" afterPath="$PROJECT_DIR$/encryption_engine_unittest.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/present_80.py" beforeDir="false" afterPath="$PROJECT_DIR$/present_80.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,36 +43,10 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\MasterIOT\EE5001" />
-    </key>
-  </component>
-  <component name="RunManager" selected="Python tests.Python tests in present_system_test.py">
-    <configuration name="AES_128bit" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="EE5001" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/AES_128bit.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python tests.Python tests in aes_system_test.py">
     <configuration name="AES_128bit" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="EE5001" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -121,7 +96,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="D:\Python_project\QA_automation\venv\Scripts\python.exe" />
+      <option name="SDK_HOME" value="E:\mystuff\Python\EE5001\venv\Scripts\python.exe" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -133,6 +108,20 @@
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
       <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests in E:/mystuff/Python/EE5001/assignment1_unittest.py" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="EE5001" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/assignment1_unittest.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
     <configuration name="Python tests in aes_system_test.py" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
@@ -179,19 +168,19 @@
     </configuration>
     <list>
       <item itemvalue="Python.main" />
-      <item itemvalue="Python.AES_128bit" />
       <item itemvalue="Python.present_80" />
+      <item itemvalue="Python tests.Python tests in E:/mystuff/Python/EE5001/assignment1_unittest.py" />
       <item itemvalue="Python tests.Python tests in encryption_engine_unittest.py" />
       <item itemvalue="Python tests.Python tests in aes_system_test.py" />
       <item itemvalue="Python tests.Python tests in present_system_test.py" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.Python tests in present_system_test.py" />
         <item itemvalue="Python tests.Python tests in aes_system_test.py" />
-        <item itemvalue="Python.AES_128bit" />
-        <item itemvalue="Python.present_80" />
+        <item itemvalue="Python tests.Python tests in present_system_test.py" />
         <item itemvalue="Python tests.Python tests in encryption_engine_unittest.py" />
+        <item itemvalue="Python tests.Python tests in E:/mystuff/Python/EE5001/assignment1_unittest.py" />
+        <item itemvalue="Python.present_80" />
       </list>
     </recent_temporary>
   </component>
@@ -253,21 +242,7 @@
       <option name="project" value="LOCAL" />
       <updated>1644792835060</updated>
     </task>
-    <task id="LOCAL-00008" summary="add ofb mode and cgb mode into AES_128bit.py">
-      <created>1645180510750</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1645180510750</updated>
-    </task>
-    <task id="LOCAL-00009" summary="add ctr mode, ofb mode and cgb mode into present_80.py">
-      <created>1645183260518</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1645183260518</updated>
-    </task>
-    <option name="localTasksCounter" value="10" />
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -278,8 +253,6 @@
     <MESSAGE value="fix typo and waring" />
     <MESSAGE value="remove print in call function" />
     <MESSAGE value="rework code with class" />
-    <MESSAGE value="add ofb mode and cgb mode into AES_128bit.py" />
-    <MESSAGE value="add ctr mode, ofb mode and cgb mode into present_80.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="add ctr mode, ofb mode and cgb mode into present_80.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="rework code with class" />
   </component>
 </project>

@@ -11,6 +11,17 @@ class PRESENT_80:
                      8, 24, 40, 56, 9, 25, 41, 57, 10, 26, 42, 58, 11, 27, 43, 59,
                      12, 28, 44, 60, 13, 29, 45, 61, 14, 30, 46, 62, 15, 31, 47, 63]
 
+    # Plaintext Padding
+    @staticmethod
+    def padding_plaintext(txt):
+        pad_txt = []
+        while len(txt) > 8:
+            pad_txt.append(int.from_bytes(txt[:8].encode(), byteorder='big'))
+            txt = txt[8:]
+        if len(txt) > 0:
+            pad_txt.append(int.from_bytes(txt.ljust(8, '\n').encode(), byteorder='big'))
+        return pad_txt
+
     # create a round-key array for each round
     def generate_round_key(self, k):
         """
@@ -34,6 +45,7 @@ class PRESENT_80:
             k ^= i << 15
         return round_key
 
+    # Block encryption engine
     @staticmethod
     def add_round_key(s, k):
         """
@@ -96,16 +108,7 @@ class PRESENT_80:
         output = self.add_round_key(state_text, round_key[-1])
         return self.int2hex(output)
 
-    @staticmethod
-    def padding_plaintext(txt):
-        pad_txt = []
-        while len(txt) > 8:
-            pad_txt.append(int.from_bytes(txt[:8].encode(), byteorder='big'))
-            txt = txt[8:]
-        if len(txt) > 0:
-            pad_txt.append(int.from_bytes(txt.ljust(8, '\n').encode(), byteorder='big'))
-        return pad_txt
-
+    # Stream encryption mode
     def ctr_mode(self, txt, k, nonce):
         """
         :param txt: raw plaintext
