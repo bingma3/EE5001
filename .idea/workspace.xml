@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ae079359-d82a-4a08-a153-02f76c746f35" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/EE5001.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/EE5001.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AES_128bit.py" beforeDir="false" afterPath="$PROJECT_DIR$/AES_128bit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AES_128bit_rework.py" beforeDir="false" afterPath="$PROJECT_DIR$/AES_128bit_rework.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/encryption_engine_unittest.py" beforeDir="false" afterPath="$PROJECT_DIR$/encryption_engine_unittest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/present_80.py" beforeDir="false" afterPath="$PROJECT_DIR$/present_80.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aes_system_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/aes_system_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/present_system_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/present_system_test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +42,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
-  <component name="RunManager" selected="Python tests.Python tests in aes_system_test.py">
+  <component name="RunManager" selected="Python tests.Python tests in present_system_test.py">
     <configuration name="AES_128bit" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="EE5001" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -168,6 +164,7 @@
     </configuration>
     <list>
       <item itemvalue="Python.main" />
+      <item itemvalue="Python.AES_128bit" />
       <item itemvalue="Python.present_80" />
       <item itemvalue="Python tests.Python tests in E:/mystuff/Python/EE5001/assignment1_unittest.py" />
       <item itemvalue="Python tests.Python tests in encryption_engine_unittest.py" />
@@ -176,8 +173,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.Python tests in aes_system_test.py" />
         <item itemvalue="Python tests.Python tests in present_system_test.py" />
+        <item itemvalue="Python tests.Python tests in aes_system_test.py" />
         <item itemvalue="Python tests.Python tests in encryption_engine_unittest.py" />
         <item itemvalue="Python tests.Python tests in E:/mystuff/Python/EE5001/assignment1_unittest.py" />
         <item itemvalue="Python.present_80" />
@@ -242,7 +239,14 @@
       <option name="project" value="LOCAL" />
       <updated>1644792835060</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="release v 0.1">
+      <created>1645279065653</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1645279065653</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -253,6 +257,7 @@
     <MESSAGE value="fix typo and waring" />
     <MESSAGE value="remove print in call function" />
     <MESSAGE value="rework code with class" />
-    <option name="LAST_COMMIT_MESSAGE" value="rework code with class" />
+    <MESSAGE value="release v 0.1" />
+    <option name="LAST_COMMIT_MESSAGE" value="release v 0.1" />
   </component>
 </project>
