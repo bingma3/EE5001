@@ -2,7 +2,10 @@ import time
 
 
 class AES_128:
-    def __init__(self, rnd=10):
+    def __init__(self, rnd=10, hm=32):
+        self.name = 'aes128'
+        self.key = '0f1571c947d9e8590cb7add6af7f6798'   # default key
+        self.hex_num = hm
         self.ROUND = rnd
         self.Rcon = [
             [0x01, 0x00, 0x00, 0x00],
@@ -376,7 +379,8 @@ class AES_128:
         output = ''
         for i in range(len(pad_txt)):
             output += hex(pad_txt[i] ^
-                          self.str_2_int(self.encrypt(hex(self.str_2_int(nonce) + i)[2:].zfill(32), k)))[2:].zfill(32)
+                          self.str_2_int(self.encrypt(hex(self.str_2_int(nonce)
+                                                          + i)[2:].zfill(self.hex_num), k)))[2:].zfill(self.hex_num)
         return output
 
     def ofb_mode(self, txt, k, iv):
@@ -394,7 +398,7 @@ class AES_128:
         pad_txt = self.padding_plaintext(txt)
         for i in range(len(pad_txt)):
             iv = self.encrypt(iv, k)
-            output += hex(pad_txt[i] ^ self.str_2_int(iv))[2:].zfill(32)
+            output += hex(pad_txt[i] ^ self.str_2_int(iv))[2:].zfill(self.hex_num)
         return output
 
     def cfb_mode(self, txt, k, iv):

@@ -2,8 +2,11 @@ import time
 
 
 class PRESENT_80:
-    def __init__(self, rnd=32):
+    def __init__(self, rnd=32, hm=16):
         # parameters
+        self.name = "present80"
+        self.key = "FFFFFFFFFFFFFFFFFFFF"
+        self.hex_num = hm
         self.ROUND = rnd
         self.Sbox = [0xc, 0x5, 0x6, 0xb, 0x9, 0x0, 0xa, 0xd, 0x3, 0xe, 0xf, 0x8, 0x4, 0x7, 0x1, 0x2]
         self.Pbox = [0, 16, 32, 48, 1, 17, 33, 49, 2, 18, 34, 50, 3, 19, 35, 51,
@@ -76,11 +79,11 @@ class PRESENT_80:
         return tmp_text
 
     @staticmethod
-    def int2hex(i):
+    def int_2_hex(i):
         return hex(i)[2:].zfill(16)
 
     @staticmethod
-    def hex2int(h):
+    def str_2_int(h):
         return int.from_bytes(bytes.fromhex(h), byteorder='big')
 
     def encrypt(self, text, k):
@@ -94,8 +97,8 @@ class PRESENT_80:
             3. run the permutation
          *the last round add the round key only
         """
-        round_key = self.generate_round_key(self.hex2int(k))
-        state_text = self.hex2int(text)
+        round_key = self.generate_round_key(self.str_2_int(k))
+        state_text = self.str_2_int(text)
         for i in range(self.ROUND-1):
             # add the round key
             state_text = self.add_round_key(state_text, round_key[i])
@@ -106,7 +109,7 @@ class PRESENT_80:
             # print(f"Round {i+1} output: {'0x'+ hex(state_text)[2:].zfill(16)}")
         # the last round of state
         output = self.add_round_key(state_text, round_key[-1])
-        return self.int2hex(output)
+        return self.int_2_hex(output)
 
     # Stream encryption mode
     def ctr_mode(self, txt, k, nonce):
@@ -123,7 +126,7 @@ class PRESENT_80:
         output = ''
         for i in range(len(pad_txt)):
             output += hex(pad_txt[i] ^
-                          self.hex2int(self.encrypt(hex(self.hex2int(nonce) + i)[2:].zfill(16), k)))[2:].zfill(16)
+                          self.str_2_int(self.encrypt(hex(self.str_2_int(nonce) + i)[2:].zfill(self.hex_num), k)))[2:].zfill(self.hex_num)
         return output
 
     def ofb_mode(self, txt, k, iv):
@@ -141,7 +144,7 @@ class PRESENT_80:
         pad_txt = self.padding_plaintext(txt)
         for i in range(len(pad_txt)):
             iv = self.encrypt(iv, k)
-            output += hex(pad_txt[i] ^ self.hex2int(iv))[2:].zfill(16)
+            output += hex(pad_txt[i] ^ self.str_2_int(iv))[2:].zfill(self.hex_num)
         return output
 
     def cfb_mode(self, txt, k, iv):
@@ -158,7 +161,7 @@ class PRESENT_80:
         output = ''
         pad_txt = self.padding_plaintext(txt)
         for i in range(len(pad_txt)):
-            iv = hex(pad_txt[i] ^ self.hex2int(self.encrypt(iv, k)))[2:].zfill(16)
+            iv = hex(pad_txt[i] ^ self.str_2_int(self.encrypt(iv, k)))[2:].zfill(16)
             output += iv
         return output
 

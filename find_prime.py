@@ -16,12 +16,12 @@ def is_prime(num, p_num):
             return True
 
 
-n = 100
+n = 100000
 
 prime = []
 new_prime = []
 data_update = False
-with open('../prime.txt', 'r') as f:
+with open('prime.txt', 'r') as f:
     lines = f.readlines()
     if lines:
         for line in lines:
@@ -42,7 +42,7 @@ while cnt <= n:
 end_time = time.time()
 if data_update:
     print(f'find {len(prime)} Prime number in {n} use {end_time-start_time} second')
-    with open('../prime.txt', 'a') as f:
+    with open('prime.txt', 'a') as f:
         for i in new_prime:
             f.write(str(i)+'\n')
     if len(prime) <= 50:
