@@ -2,7 +2,7 @@ from AES_128bit import AES_128
 from present_80 import PRESENT_80
 import pandas as pd
 import time
-from PRNG_Randomness_Tests import frequency_test, runs_test
+from PRNG_Randomness_Tests import frequency_test, runs_test, mus_test
 from openpyxl import load_workbook
 
 
@@ -72,22 +72,25 @@ if __name__ == '__main__':
         lines = f.readlines()
         for line in lines:
             raw_text += line
+    bit_length = len(raw_text) * 8  # bit_length equal to total char x 8, where 8 bits in a char
     times_of_run = 10
-    engine = 'aes128'
+    engine = 'present80'
     ctr = CTR_DEBG(engine)
     key = ctr.engine.key
 
     iv = ctr.get_seed(times_of_run)
     table = {'True_Random_Seed': [ctr.engine.int_2_hex(x) for x in iv], 'length_of_bits_string': [],
              'P-value(freq)': [], 'random(freq)': [], 'time(freq)': [],
-             'P-value(runs)': [], 'random(runs)': [], 'time(runs)': []}
+             'P-value(runs)': [], 'random(runs)': [], 'time(runs)': [],
+             'L-bit': [], 'Q': [], 'K': [], 'fn': [],
+             'P-value(mus)': [], 'random(mus)': [], 'time(mus)': []}
 
     for i in range(times_of_run):
         print(f'Test Round {i+1}', end='')
         # frequency test
         start = time.perf_counter()
         e = ctr.engine.str_2_int(ctr.prng(raw_text, ctr.engine.key, iv[i]))
-        outcome = frequency_test(e)
+        outcome = frequency_test(e, bit_length)
         end = time.perf_counter()
         table['length_of_bits_string'].append(outcome[0])
         table['P-value(freq)'].append(outcome[1])
@@ -97,7 +100,7 @@ if __name__ == '__main__':
         if outcome[2] == 'True':
             start = time.perf_counter()
             e = ctr.engine.str_2_int(ctr.prng(raw_text, ctr.engine.key, iv[i]))
-            outcome = runs_test(e)
+            outcome = runs_test(e, bit_length)
             end = time.perf_counter()
             table['P-value(runs)'].append(outcome[1])
             table['random(runs)'].append(outcome[2])
@@ -106,7 +109,20 @@ if __name__ == '__main__':
             table['P-value(runs)'].append('n/a')
             table['random(runs)'].append('n/a')
             table['time(runs)'].append('n/a')
+        # Maurer’s universal statistical test
+        start = time.perf_counter()
+        e = ctr.engine.str_2_int(ctr.prng(raw_text, ctr.engine.key, iv[i]))
+        outcome = mus_test(e, bit_length)
+        end = time.perf_counter()
+        table['L-bit'].append(outcome[0])
+        table['Q'].append(outcome[1])
+        table['K'].append(outcome[2])
+        table['fn'].append(outcome[3])
+        table['P-value(mus)'].append(outcome[4])
+        table['random(mus)'].append(outcome[5])
+        table['time(mus)'].append(end - start)
         print(' ... checked')
+        # print(table)
 
     path = 'output.xlsx'
     book = load_workbook(path)
@@ -116,3 +132,6 @@ if __name__ == '__main__':
     df.to_excel(writer, sheet_name=f'{ctr.name}-{time.time_ns()}')
     writer.save()
     writer.close()
+
+
+

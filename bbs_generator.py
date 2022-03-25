@@ -3,7 +3,7 @@ from AES_128bit import AES_128
 from present_80 import PRESENT_80
 from random import randint
 import time
-from PRNG_Randomness_Tests import frequency_test, runs_test
+from PRNG_Randomness_Tests import frequency_test, runs_test, mus_test
 import pandas as pd
 from openpyxl import load_workbook
 
@@ -57,7 +57,7 @@ class BBS_PRNG:
             if lines:
                 for line in lines:
                     temp = int(line.rstrip())
-                    if temp > low & temp < high:
+                    if low < temp < high:
                         try:
                             if self.euclid.mod(4, temp) == 3:
                                 prime.append(temp)
@@ -101,6 +101,13 @@ class BBS_PRNG:
                     return rand_seed
 
     def bbs_generator(self, seed, n, bit_length):
+        """
+
+        :param seed: random number
+        :param n: product of two large primes
+        :param bit_length: bit length of seed
+        :return: bit sequence
+        """
         x = self.euclid.mod(n, seed ** 2)
         b = 0
         for i in range(bit_length):
@@ -125,14 +132,17 @@ if __name__ == '__main__':
         lines = f.readlines()
         for line in lines:
             raw_text += line
+    bit_length = len(raw_text)*8     # bit_length equal to total char x 8, where 8 bits in a char
     times_of_run = 10
-    engine = 'aes128'
+    engine = 'present80'
     bbs = BBS_PRNG(engine)
     key = bbs.engine.key
 
     table = {'length_of_bits_string': [],
              'P-value(freq)': [], 'random(freq)': [], 'time(freq)': [],
-             'P-value(runs)': [], 'random(runs)': [], 'time(runs)': []}
+             'P-value(runs)': [], 'random(runs)': [], 'time(runs)': [],
+             'L-bit': [], 'Q': [], 'K': [], 'fn': [],
+             'P-value(mus)': [], 'random(mus)': [], 'time(mus)': []}
 
     for i in range(times_of_run):
         print(f'Test Round {i+1}')
@@ -142,7 +152,7 @@ if __name__ == '__main__':
         #  frequency test
         start = time.perf_counter()
         e = bbs.engine.str_2_int(bbs.prng(raw_text, bbs.engine.key, seeds, n))
-        outcome = frequency_test(e)
+        outcome = frequency_test(e, bit_length)
         end = time.perf_counter()
         table['length_of_bits_string'].append(outcome[0])
         table['P-value(freq)'].append(outcome[1])
@@ -152,7 +162,7 @@ if __name__ == '__main__':
         if outcome[2] == 'True':
             start = time.perf_counter()
             e = bbs.engine.str_2_int(bbs.prng(raw_text, bbs.engine.key, seeds, n))
-            outcome = runs_test(e)
+            outcome = runs_test(e, bit_length)
             end = time.perf_counter()
             table['P-value(runs)'].append(outcome[1])
             table['random(runs)'].append(outcome[2])
@@ -161,6 +171,19 @@ if __name__ == '__main__':
             table['P-value(runs)'].append('n/a')
             table['random(runs)'].append('n/a')
             table['time(runs)'].append('n/a')
+        # Maurer’s universal statistical test
+        start = time.perf_counter()
+        e = bbs.engine.str_2_int(bbs.prng(raw_text, bbs.engine.key, seeds, n))
+        outcome = mus_test(e, bit_length)
+        end = time.perf_counter()
+        table['L-bit'].append(outcome[0])
+        table['Q'].append(outcome[1])
+        table['K'].append(outcome[2])
+        table['fn'].append(outcome[3])
+        table['P-value(mus)'].append(outcome[4])
+        table['random(mus)'].append(outcome[5])
+        table['time(mus)'].append(end - start)
+        print(' ... checked')
 
     path = 'output.xlsx'
     book = load_workbook(path)

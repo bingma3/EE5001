@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ae079359-d82a-4a08-a153-02f76c746f35" name="Changes" comment="release v 0.2&#10;add bbs generator&#10;add ctr degb&#10;add ture random number generator&#10;add randomness test methods">
-      <change afterPath="$PROJECT_DIR$/PRNG_Randomness_Tests.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bbs_generator.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ctr_degb.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prime.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/randomwrapy.py" afterDir="false" />
+    <list default="true" id="ae079359-d82a-4a08-a153-02f76c746f35" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/output.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AES_128bit.py" beforeDir="false" afterPath="$PROJECT_DIR$/AES_128bit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/euclidAlgorithm.py" beforeDir="false" afterPath="$PROJECT_DIR$/euclidAlgorithm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/find_prime.py" beforeDir="false" afterPath="$PROJECT_DIR$/find_prime.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/present_80.py" beforeDir="false" afterPath="$PROJECT_DIR$/present_80.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PRNG_Randomness_Tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/PRNG_Randomness_Tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bbs_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/bbs_generator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ctr_degb.py" beforeDir="false" afterPath="$PROJECT_DIR$/ctr_degb.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -243,7 +238,14 @@
       <option name="project" value="LOCAL" />
       <updated>1645279065653</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="release v 0.2&#10;add bbs generator&#10;add ctr degb&#10;add ture random number generator&#10;add randomness test methods">
+      <created>1648121350540</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1648121350540</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
